@@ -16,8 +16,7 @@ import { ImageMoviesPipe } from './shared/pipes/image-movies.pipe';
 @NgModule({
   declarations: [
     AppComponent,
-    SignInComponent,
-    ImageMoviesPipe
+    SignInComponent
   ],
   imports: [
     BrowserModule,

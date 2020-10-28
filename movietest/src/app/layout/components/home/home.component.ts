@@ -157,7 +157,7 @@ const DATA: Card[] = [
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, OnDestroy {
-
+  urlTest = 'http://image.tmdb.org/t/p/w500/ohj9zYG2zSD69yfM3RF4xAKTl1j.jpg'
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
   obs: Observable<any>;
@@ -175,9 +175,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.movieService.getMovies().subscribe(data => {
       console.log(data)
       this.movies = data['data'].results;
-      this.movies.forEach(element =>{
+      this.movies.forEach(element => {
         element.release_date = Date.parse(element.release_date);
-      })
+      }); 
+
       console.log(this.movies);
       this.dataSource = new MatTableDataSource(this.movies);
       this.changeDetectorRef.detectChanges();
@@ -191,9 +192,5 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  formatDate(tim:string){
-    
-    return Date.parse(tim);
-  }
 
 }

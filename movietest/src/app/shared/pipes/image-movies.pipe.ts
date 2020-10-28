@@ -7,7 +7,7 @@ export class ImageMoviesPipe implements PipeTransform {
 
   transform(movie: any, poster: boolean = false): any {
     const url = 'http://image.tmdb.org/t/p/w500';
-
+    console.log("entro al pipe: ",movie);
     if (poster) {
       return url + movie.poster_path;
     }
