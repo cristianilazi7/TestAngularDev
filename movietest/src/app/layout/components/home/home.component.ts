@@ -37,7 +37,6 @@ export class SipnosisActivityComponentDialog {
 
   getMovie() {
     this.movieService.getMoviesId(this.data.id).subscribe((Data) => {
-      console.log("Dialog", Data.data);
       this.movie = Data.data;
     });
   }
@@ -103,15 +102,12 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     this.search = this.SearchForm.value.search;
     if (this.SearchForm.valid) {
-      console.log(this.search);
       this.movieService.getMoviesSearch(this.search).subscribe((data) => {
-        console.log(data);
         this.movies = data["data"].results;
         this.movies.forEach((element) => {
           element.release_date = Date.parse(element.release_date);
         });
 
-        console.log(this.movies);
         this.dataSource = new MatTableDataSource(this.movies);
         this.changeDetectorRef.detectChanges();
         this.dataSource.paginator = this.paginator;
@@ -122,13 +118,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   getMovies() {
     this.movieService.getMovies().subscribe((data) => {
-      console.log(data);
       this.movies = data["data"].results;
       this.movies.forEach((element) => {
         element.release_date = Date.parse(element.release_date);
       });
 
-      console.log(this.movies);
       this.dataSource = new MatTableDataSource(this.movies);
       this.changeDetectorRef.detectChanges();
       this.dataSource.paginator = this.paginator;

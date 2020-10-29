@@ -25,7 +25,6 @@ export class MovieService {
   ).subscribe(data => {
       console.log(data);
     }); */
-    console.log('headers',headers.get('authorization'));
     return this.http.get<any>(url, {headers}).pipe(
       retry(1),
       catchError(this.handleError)
@@ -41,7 +40,6 @@ export class MovieService {
   ).subscribe(data => {
       console.log(data);
     }); */
-    console.log('headers',headers.get('authorization'));
     return this.http.get<any>(url, {headers}).pipe(
       retry(1),
       catchError(this.handleError)

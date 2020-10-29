@@ -31,7 +31,7 @@ export class AuthService {
   }
 
   getHeaders() {
-    console.log(this.getToken());
+   
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       authorization: this.getToken()
@@ -49,12 +49,10 @@ export class AuthService {
       access_token: '',
     };
     this.http.post<any>(url, params).subscribe(data => {
-      console.log(data);
       if (data) {
         token.token_type = 'Bearer';
         token.access_token = data.Token;
       }
-      console.log(token);
       
       this.setToken(`{"token_type": "${token.token_type}","access_token": "${token.access_token}"}`);
       Swal.fire(
