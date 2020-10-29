@@ -1,14 +1,15 @@
 <div class="d-flex">
 
-    <mat-card class="container" *ngFor="let movie of obs | async">
+    <mat-card class="container" >
         
-            <div class="movie-card">
+            <div class="movie-card" *ngFor="let movie of obs | async">
                 <div class="movie-header manOfSteel">
                     <div class="header-icon-container"
+                    (click)="openDialog(movie.id)"
                     [ngStyle]="{
                         'background-image': 'url( ' + (movie | imageMovies) + ' )'
                       }">
-                        <a href="#">
+                        <a  (click)="openDialog(movie.id)">
                             <i class="material-icons header-icon"></i>
                         </a>
                     </div>
@@ -17,7 +18,7 @@
                 <!--movie-header-->
                 <div class="movie-content">
                     <div class="movie-content-header">
-                        <a href="#">
+                        <a (click)="openDialog(movie.id)">
                             <h3 class="movie-title">{{movie.title}}</h3>
                         </a>
                         <div class="imax-logo"></div>

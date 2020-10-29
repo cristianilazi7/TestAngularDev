@@ -38,7 +38,7 @@ router.route('/').get(async function (req, res) {
 
 
   router.route('/:id').get(async function (req, res) {
-      const id = '49521';
+      const id = req.params.id;
     const url = `${urlMoviedb}/movie/${id}?api_key=${apikey}&language=es`;
     let promise = new Promise(function(resolve, reject){
         jsonpClient(url, function (err, data) {

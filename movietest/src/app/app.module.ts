@@ -11,7 +11,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from './shared/services/auth.service';
-import { ImageMoviesPipe } from './shared/pipes/image-movies.pipe';
 
 @NgModule({
   declarations: [

@@ -1,183 +1,93 @@
-import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { MatPaginator, MatTableDataSource } from '@angular/material';
-import { element } from 'protractor';
-import { Observable } from 'rxjs/internal/Observable';
-import { MovieService } from 'src/app/shared/services/movie.service';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  ChangeDetectorRef,
+  Inject
+} from "@angular/core";
+import {
+  MatPaginator,
+  MatTableDataSource,
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from "@angular/material";
+import { Observable } from "rxjs/internal/Observable";
+import { MovieService } from "src/app/shared/services/movie.service";
 
-export interface Card {
-  title: string;
-  subtitle: string;
-  text: string;
-}
-const DATA: Card[] = [
-  {
-    title: 'Shiba Inu 1',
-    subtitle: 'Dog Breed',
-    text: 'The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.'
-  },
-  {
-    title: 'Shiba Inu 2',
-    subtitle: 'Dog Breed',
-    text: 'The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.'
-  },
-  {
-    title: 'Shiba Inu 3',
-    subtitle: 'Dog Breed',
-    text: 'The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.'
-  },
-  {
-    title: 'Shiba Inu 4',
-    subtitle: 'Dog Breed',
-    text: 'The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.'
-  },
-  {
-    title: 'Shiba Inu 5',
-    subtitle: 'Dog Breed',
-    text: 'The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.'
-  },
-  {
-    title: 'Shiba Inu 6',
-    subtitle: 'Dog Breed',
-    text: 'The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.'
-  },
-  {
-    title: 'Shiba Inu 7',
-    subtitle: 'Dog Breed',
-    text: 'The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.'
-  },
-  {
-    title: 'Shiba Inu 8',
-    subtitle: 'Dog Breed',
-    text: 'The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.'
-  },
-  {
-    title: 'Shiba Inu 9',
-    subtitle: 'Dog Breed',
-    text: 'The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.'
-  },
-  {
-    title: 'Shiba Inu 10',
-    subtitle: 'Dog Breed',
-    text: 'The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.'
-  },
-  {
-    title: 'Shiba Inu 10',
-    subtitle: 'Dog Breed',
-    text: 'The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.'
-  },
-  {
-    title: 'Shiba Inu 10',
-    subtitle: 'Dog Breed',
-    text: 'The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.'
-  },
-  {
-    title: 'Shiba Inu 10',
-    subtitle: 'Dog Breed',
-    text: 'The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.'
-  },
-  {
-    title: 'Shiba Inu 11',
-    subtitle: 'Dog Breed',
-    text: 'The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.'
-  },
-  {
-    title: 'Shiba Inu 12',
-    subtitle: 'Dog Breed',
-    text: 'The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.'
-  },
-  {
-    title: 'Shiba Inu 13',
-    subtitle: 'Dog Breed',
-    text: 'The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.'
-  },
-  {
-    title: 'Shiba Inu 14',
-    subtitle: 'Dog Breed',
-    text: 'The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.'
-  },
-  {
-    title: 'Shiba Inu 15',
-    subtitle: 'Dog Breed',
-    text: 'The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.'
-  },
-  {
-    title: 'Shiba Inu 16',
-    subtitle: 'Dog Breed',
-    text: 'The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.'
-  },
-  {
-    title: 'Shiba Inu 17',
-    subtitle: 'Dog Breed',
-    text: 'The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.'
-  },
-  {
-    title: 'Shiba Inu 18',
-    subtitle: 'Dog Breed',
-    text: 'The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.'
-  },
-  {
-    title: 'Shiba Inu 19',
-    subtitle: 'Dog Breed',
-    text: 'The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.'
-  },
-  {
-    title: 'Shiba Inu 20',
-    subtitle: 'Dog Breed',
-    text: 'The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.'
-  },
-  {
-    title: 'Shiba Inu 21',
-    subtitle: 'Dog Breed',
-    text: 'The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.'
-  },
-  {
-    title: 'Shiba Inu 22',
-    subtitle: 'Dog Breed',
-    text: 'The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.'
-  },
-  {
-    title: 'Shiba Inu 23',
-    subtitle: 'Dog Breed',
-    text: 'The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.'
-  },
-  {
-    title: 'Shiba Inu 24',
-    subtitle: 'Dog Breed',
-    text: 'The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.'
-  },
-  {
-    title: 'Shiba Inu 25',
-    subtitle: 'Dog Breed',
-    text: 'The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.'
-  }
-];
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  selector: "sipnosis-dialog",
+  templateUrl: "sipnosis-dialog.html",
+})
+export class SipnosisActivityComponentDialog {
+  movie: any;
+  constructor(
+    private movieService: MovieService,
+    public dialogRef: MatDialogRef<SipnosisActivityComponentDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    this.getMovie();
+    
+  }
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  getMovie(){
+    this.movieService.getMoviesId(this.data.id)
+        .subscribe((Data) => {
+          console.log('Dialog', Data.data);
+          this.movie = Data.data;
+        });
+  }
+
+}
+
+@Component({
+  selector: "app-home",
+  templateUrl: "./home.component.html",
+  styleUrls: ["./home.component.scss"],
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  urlTest = 'http://image.tmdb.org/t/p/w500/ohj9zYG2zSD69yfM3RF4xAKTl1j.jpg'
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  urlTest = "http://image.tmdb.org/t/p/w500/ohj9zYG2zSD69yfM3RF4xAKTl1j.jpg";
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   obs: Observable<any>;
   movies: any[] = [];
   dataSource: MatTableDataSource<any>;
-  constructor(private changeDetectorRef: ChangeDetectorRef, private movieService: MovieService ) { 
+  constructor(
+    private changeDetectorRef: ChangeDetectorRef,
+    private movieService: MovieService,
+    public dialog: MatDialog
+  ) {
     this.dataSource = new MatTableDataSource(this.movies);
   }
-  
+
   ngOnInit() {
     this.getMovies();
   }
 
+  openDialog(id: string): void {
+    //console.log(item.order.id);
+   
+    const dialogRef = this.dialog.open(SipnosisActivityComponentDialog, {
+      width: 'auto',
+      data: {id}
+    });
+    
+    /*dialogRef.afterClosed().subscribe(result => {
+
+    });*/
+  }
+
   getMovies() {
-    this.movieService.getMovies().subscribe(data => {
-      console.log(data)
-      this.movies = data['data'].results;
-      this.movies.forEach(element => {
+    this.movieService.getMovies().subscribe((data) => {
+      console.log(data);
+      this.movies = data["data"].results;
+      this.movies.forEach((element) => {
         element.release_date = Date.parse(element.release_date);
-      }); 
+      });
 
       console.log(this.movies);
       this.dataSource = new MatTableDataSource(this.movies);
@@ -187,10 +97,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
   ngOnDestroy() {
-    if (this.dataSource) { 
-      this.dataSource.disconnect(); 
+    if (this.dataSource) {
+      this.dataSource.disconnect();
     }
   }
-
-
 }

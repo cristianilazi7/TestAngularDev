@@ -29,8 +29,32 @@ export class MovieService {
     return this.http.get<any>(url, {headers}).pipe(
       retry(1),
       catchError(this.handleError)
-  );
+    );
   }
+
+  getMoviesId(id: string) {
+    const url = `${environment.URL}/movies/${id}`;
+    const headers = this.authService.getHeaders();
+    /* this.http.get<any>(url, {headers}).pipe(
+      retry(1),
+      catchError(this.handleError)
+  ).subscribe(data => {
+      console.log(data);
+    }); */
+    console.log('headers',headers.get('authorization'));
+    return this.http.get<any>(url, {headers}).pipe(
+      retry(1),
+      catchError(this.handleError)
+    );
+
+  }
+
+  /* searchMovie(texto: string) {
+    const url = `${this.urlMoviedb}/search/movie?query=${texto}&sort_by=popularity.desc&api_key=${this.apikey}&language=es`;
+
+    // tslint:disable-next-line: no-string-literal
+    return this.http.jsonp(url, 'callback').pipe( map( res => this.movies = res['results'] ));
+  } */
 
   handleError(error) {
     let errorMessage = '';
