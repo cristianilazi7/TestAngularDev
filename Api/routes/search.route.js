@@ -4,7 +4,7 @@ const router = express.Router();
 const { apikey,urlMoviedb } = require('../config.json');
 
 router.route('/:moviename').get(async function (req, res) {
-  console.log('Entro a buscar: ', req.params); 
+  
   const moviename = req.params.moviename;
   const url = `${urlMoviedb}/search/movie?query=${moviename}&sort_by=popularity.desc&api_key=${apikey}&language=es`;
   

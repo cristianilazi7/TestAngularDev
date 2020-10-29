@@ -27,7 +27,6 @@ app.use('/api/movies/search',authenticateToken,MovieSearchRoutes);
 app.use('/api/movies',authenticateToken,MoviesRoutes);
 
 app.use((req, res, next) =>{
-    console.log('Path::::::',req.path)
     const error = new Error('Not found DDD');
     error.status = 404;
     next(error);

@@ -17,6 +17,8 @@ import { Observable } from 'rxjs/internal/Observable';
 import { MovieService } from 'src/app/shared/services/movie.service';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: "sipnosis-dialog",
@@ -27,6 +29,7 @@ export class SipnosisActivityComponentDialog {
   movie: any;
   constructor(
     private movieService: MovieService,
+    private router: Router,
     public dialogRef: MatDialogRef<SipnosisActivityComponentDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -39,6 +42,15 @@ export class SipnosisActivityComponentDialog {
   getMovie() {
     this.movieService.getMoviesId(this.data.id).subscribe((Data) => {
       this.movie = Data.data;
+    },(error: HttpErrorResponse) => {
+      this.dialogRef.close();
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: error.message,
+      });
+      this.router.navigateByUrl('signin');
+      //expect(error.error.message).toEqual(emsg, 'message');
     });
   }
 }
@@ -61,6 +73,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private changeDetectorRef: ChangeDetectorRef,
     private movieService: MovieService,
+    private router: Router,
     public dialog: MatDialog
   ) {
     this.dataSource = new MatTableDataSource(this.movies);
@@ -99,7 +112,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (this.SearchForm.valid) {
       this.movieService.getMoviesSearch(this.search).subscribe((data) => {
         this.movies = data['data'].results;
-        console.log(this.movies);
+        
         this.movies.forEach((element) => {
           element.release_date = Date.parse(element.release_date);
 
@@ -109,14 +122,24 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.changeDetectorRef.detectChanges();
         this.dataSource.paginator = this.paginator;
         this.obs = this.dataSource.connect();
+      }, (error: HttpErrorResponse) => {
+        console.log(error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error.message,
+        });
+        this.router.navigateByUrl('signin');
+        //expect(error.error.message).toEqual(emsg, 'message');
       });
     }
   }
 
   getMovies() {
+    const emsg = 'simulated network error';
     this.movieService.getMovies().subscribe((data) => {
       this.movies = data['data'].results;
-      console.log(this.movies);
+      
       this.movies.forEach((element) => {
         element.release_date = Date.parse(element.release_date);
         element.vote_average_number = element.vote_average * 10;
@@ -126,6 +149,15 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.changeDetectorRef.detectChanges();
       this.dataSource.paginator = this.paginator;
       this.obs = this.dataSource.connect();
+    },(error: HttpErrorResponse) => {
+      console.log(error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: error.message,
+      });
+      this.router.navigateByUrl('signin');
+      //expect(error.error.message).toEqual(emsg, 'message');
     });
   }
   ngOnDestroy() {

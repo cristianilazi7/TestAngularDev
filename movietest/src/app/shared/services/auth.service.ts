@@ -16,6 +16,10 @@ export class AuthService {
     localStorage.setItem('isAuthenticated', '1');
   }
 
+  isAuthenticated(): string {
+   return localStorage.getItem('isAuthenticated');
+  }
+
   getToken(): string {
     let token = {
       token_type: '',

@@ -26,10 +26,8 @@ router.route('/').post([
          password = req.body.password;
          token = jwt.sign({
             data: email
-          }, secret, { expiresIn: '1d' });
+          }, secret, { expiresIn: '1m' });
          res.status(200).json({'email':email, 'password':password,'Token':token, 'result': 'successfully','status':200});
 });
-
-
 
   module.exports = router;
