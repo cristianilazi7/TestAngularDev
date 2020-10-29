@@ -21,6 +21,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: "sipnosis-dialog",
   templateUrl: 'sipnosis-dialog.html',
+  styleUrls: ['./home.component.scss'],
 })
 export class SipnosisActivityComponentDialog {
   movie: any;
@@ -98,8 +99,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (this.SearchForm.valid) {
       this.movieService.getMoviesSearch(this.search).subscribe((data) => {
         this.movies = data['data'].results;
+        console.log(this.movies);
         this.movies.forEach((element) => {
           element.release_date = Date.parse(element.release_date);
+
         });
 
         this.dataSource = new MatTableDataSource(this.movies);
@@ -113,8 +116,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   getMovies() {
     this.movieService.getMovies().subscribe((data) => {
       this.movies = data['data'].results;
+      console.log(this.movies);
       this.movies.forEach((element) => {
         element.release_date = Date.parse(element.release_date);
+        element.vote_average_number = element.vote_average * 10;
       });
 
       this.dataSource = new MatTableDataSource(this.movies);
