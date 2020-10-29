@@ -49,12 +49,15 @@ export class MovieService {
 
   }
 
-  /* searchMovie(texto: string) {
-    const url = `${this.urlMoviedb}/search/movie?query=${texto}&sort_by=popularity.desc&api_key=${this.apikey}&language=es`;
-
+  getMoviesSearch(id: string) {
+    const url = `${environment.URL}/movies/search/${id}`;
+    const headers = this.authService.getHeaders();
     // tslint:disable-next-line: no-string-literal
-    return this.http.jsonp(url, 'callback').pipe( map( res => this.movies = res['results'] ));
-  } */
+    return this.http.get<any>(url, {headers}).pipe(
+      retry(1),
+      catchError(this.handleError)
+    );
+  }
 
   handleError(error) {
     let errorMessage = '';

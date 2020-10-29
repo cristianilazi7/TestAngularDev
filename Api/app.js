@@ -3,6 +3,7 @@ const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const MoviesRoutes = require('./routes/movies.route');
+const MovieSearchRoutes = require('./routes/search.route');
 const AuthRoutes = require('./routes/auth.route');
 const authenticateToken = require('./_helper/middleware');
 app.use(bodyParser.urlencoded({extended: false}));
@@ -22,10 +23,11 @@ app.use((req, res, next) => {
 
 //Routes which handling request
 app.use('/api/auth',AuthRoutes);
+app.use('/api/movies/search',authenticateToken,MovieSearchRoutes);
 app.use('/api/movies',authenticateToken,MoviesRoutes);
 
-
 app.use((req, res, next) =>{
+    console.log('Path::::::',req.path)
     const error = new Error('Not found DDD');
     error.status = 404;
     next(error);
