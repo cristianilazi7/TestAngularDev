@@ -17,55 +17,53 @@ export class AuthService {
   }
 
   getToken(): string {
-     let token = {
+    let token = {
       token_type: '',
       access_token: '',
     };
-     const check = localStorage.getItem('oauth');
-     if (check !== undefined && check !== '' && check !== null ) {
-      token = JSON.parse(check);
+    const check = localStorage.getItem('oauth');
+    if (check !== undefined && check !== '' && check !== null) {
+      const tokenString = JSON.parse(check);
+      token = JSON.parse(tokenString);
       //
     }
-     console.log(token);
-     return token.token_type + ' ' + token.access_token;
+    return token.token_type + ' ' + token.access_token;
   }
 
   getHeaders() {
     console.log(this.getToken());
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoib2NhaW5ndGVjQGdtYWlsLmNvbSIsImlhdCI6MTYwMzg5NjczMSwiZXhwIjoxNjAzOTgzMTMxfQ.s2bS2QXUGmQU4EKAg0mA02-2dzfmDYq9OSJqbYlZJXM'
+      authorization: this.getToken()
     });
     return headers;
   }
 
 
-  loginService(email:string,password:string): Observable<any>{
+  loginService(email: string, password: string): Observable<any> {
     const url = `${environment.URL}/auth`;
     let params = new HttpParams().set('email', email); // create params object
     params = params.append('password', password); // add a new param, creating a new object
-    let token = {
+    const token = {
       token_type: '',
       access_token: '',
     };
-    this.http.post<any>(url, params).subscribe(data =>{
+    this.http.post<any>(url, params).subscribe(data => {
       console.log(data);
-      if(data){
+      if (data) {
         token.token_type = 'Bearer';
         token.access_token = data.Token;
       }
       console.log(token);
-      this.setToken(`{
-        'token_type': '${token.token_type}',
-        'access_token': '${token.access_token}'
-      }`);
+      
+      this.setToken(`{"token_type": "${token.token_type}","access_token": "${token.access_token}"}`);
       Swal.fire(
         'Entramos!',
         'Genial busquemos tu pelicula favorita',
         'success'
       );
       this.router.navigateByUrl('home');
-    })
+    });
     return this.http.post<any>(url, params);
   }
 
