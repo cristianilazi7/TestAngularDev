@@ -8,72 +8,56 @@ import { throwError } from 'rxjs/internal/observable/throwError';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MovieService {
-
-  constructor(private http: HttpClient,
-              private authService: AuthService,
-              private router: Router) { }
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   getMovies(): Observable<any> {
     const url = `${environment.URL}/movies`;
     const headers = this.authService.getHeaders();
-    /* this.http.get<any>(url, {headers}).pipe(
-      retry(1),
-      catchError(this.handleError)
-  ).subscribe(data => {
-      console.log(data);
-    }); */
-    return this.http.get<any>(url, {headers}).pipe(
-      retry(1),
-      catchError(this.handleError)
-    );
+    return this.http
+      .get<any>(url, { headers })
+      .pipe(retry(1), catchError(this.handleError));
   }
 
   getMoviesId(id: string) {
     const url = `${environment.URL}/movies/${id}`;
     const headers = this.authService.getHeaders();
-    /* this.http.get<any>(url, {headers}).pipe(
-      retry(1),
-      catchError(this.handleError)
-  ).subscribe(data => {
-      console.log(data);
-    }); */
-    return this.http.get<any>(url, {headers}).pipe(
-      retry(1),
-      catchError(this.handleError)
-    );
-
+    return this.http
+      .get<any>(url, { headers })
+      .pipe(retry(1), catchError(this.handleError));
   }
 
   getMoviesSearch(id: string) {
     const url = `${environment.URL}/movies/search/${id}`;
     const headers = this.authService.getHeaders();
-    // tslint:disable-next-line: no-string-literal
-    return this.http.get<any>(url, {headers}).pipe(
-      retry(1),
-      catchError(this.handleError)
-    );
+    return this.http
+      .get<any>(url, { headers })
+      .pipe(retry(1), catchError(this.handleError));
   }
 
   handleError(error) {
     let errorMessage = '';
-   
+
     if (error.error instanceof ErrorEvent) {
-        // client-side error
-        errorMessage = `Error: ${error.error.message}`;
+      // client-side error
+      errorMessage = `Error: ${error.error.message}`;
     } else {
-        // server-side error
-        errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+      // server-side error
+      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
     console.log(errorMessage);
     Swal.fire({
       icon: 'error',
       title: 'Oops...',
-      text: errorMessage
+      text: errorMessage,
     });
-    
+
     return throwError(errorMessage);
-}
+  }
 }

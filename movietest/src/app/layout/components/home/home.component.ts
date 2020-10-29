@@ -5,22 +5,22 @@ import {
   ViewChild,
   ChangeDetectorRef,
   Inject,
-} from "@angular/core";
+} from '@angular/core';
 import {
   MatPaginator,
   MatTableDataSource,
   MatDialog,
   MatDialogRef,
   MAT_DIALOG_DATA,
-} from "@angular/material";
-import { Observable } from "rxjs/internal/Observable";
-import { MovieService } from "src/app/shared/services/movie.service";
-import { FormGroup, Validators, FormBuilder } from "@angular/forms";
-import Swal from "sweetalert2";
+} from '@angular/material';
+import { Observable } from 'rxjs/internal/Observable';
+import { MovieService } from 'src/app/shared/services/movie.service';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: "sipnosis-dialog",
-  templateUrl: "sipnosis-dialog.html",
+  templateUrl: 'sipnosis-dialog.html',
 })
 export class SipnosisActivityComponentDialog {
   movie: any;
@@ -43,16 +43,16 @@ export class SipnosisActivityComponentDialog {
 }
 
 @Component({
-  selector: "app-home",
-  templateUrl: "./home.component.html",
-  styleUrls: ["./home.component.scss"],
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  urlTest = "http://image.tmdb.org/t/p/w500/ohj9zYG2zSD69yfM3RF4xAKTl1j.jpg";
+  urlTest = 'http://image.tmdb.org/t/p/w500/ohj9zYG2zSD69yfM3RF4xAKTl1j.jpg';
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   SearchForm: FormGroup;
   submitted = false;
-  search = "";
+  search = '';
   obs: Observable<any>;
   movies: any[] = [];
   dataSource: MatTableDataSource<any>;
@@ -67,7 +67,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.SearchForm = this.formBuilder.group({
-      search: ["", [Validators.required, Validators.minLength(2)]],
+      search: ['', [Validators.required, Validators.minLength(2)]],
     });
     this.getMovies();
   }
@@ -76,16 +76,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   openDialog(id: string): void {
-    //console.log(item.order.id);
-
     const dialogRef = this.dialog.open(SipnosisActivityComponentDialog, {
-      width: "auto",
+      width: 'auto',
       data: { id },
     });
-
-    /*dialogRef.afterClosed().subscribe(result => {
-
-    });*/
   }
   movieSearch() {
     this.submitted = true;
@@ -93,9 +87,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     // stop here if form is invalid
     if (this.SearchForm.invalid) {
       Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Porfavor ingrese al menos dos caracteres",
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Porfavor ingrese al menos dos caracteres',
       });
       return;
     }
@@ -103,7 +97,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.search = this.SearchForm.value.search;
     if (this.SearchForm.valid) {
       this.movieService.getMoviesSearch(this.search).subscribe((data) => {
-        this.movies = data["data"].results;
+        this.movies = data['data'].results;
         this.movies.forEach((element) => {
           element.release_date = Date.parse(element.release_date);
         });
@@ -118,7 +112,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   getMovies() {
     this.movieService.getMovies().subscribe((data) => {
-      this.movies = data["data"].results;
+      this.movies = data['data'].results;
       this.movies.forEach((element) => {
         element.release_date = Date.parse(element.release_date);
       });

@@ -1,76 +1,93 @@
 <div class="d-flex">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark bg-faded">
-        <a class="navbar-brand" href="#">Peliculas</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark bg-faded">
+    <a class="navbar-brand" href="#">Peliculas</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <form
+        class="form-inline my-2 my-lg-0"
+        [formGroup]="SearchForm"
+        (ngSubmit)="movieSearch()"
+      >
+        <input
+          type="search"
+          id="inputSearch"
+          class="form-control mr-sm-2"
+          formControlName="search"
+          [ngClass]="{ 'is-invalid': submitted && f.search.errors }"
+          placeholder="Buscar"
+          autofocus
+        />
+
+        <button
+          mat-raised-button
+          class="btn btn-outline-success my-2 my-sm-0"
+          color="primary"
+        >
+          Buscar
         </button>
-      
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          
-          <form class="form-inline my-2 my-lg-0" [formGroup]="SearchForm" (ngSubmit)="movieSearch()">
-            <input type="search"
-            id="inputSearch"
-            class="form-control mr-sm-2" 
-            formControlName="search"
-            [ngClass]="{ 'is-invalid': submitted && f.search.errors }"
-            placeholder="Buscar"
-            autofocus/>
-            
-            <button
-                        mat-raised-button
-                        class="btn btn-outline-success my-2 my-sm-0"
-                        color="primary"
-                      >
-                      Buscar 
-                      </button>
-          </form>
+      </form>
+    </div>
+  </nav>
+  <mat-card class="container">
+    <div class="movie-card" *ngFor="let movie of obs | async">
+      <div class="movie-header manOfSteel">
+        <div
+          class="header-icon-container"
+          (click)="openDialog(movie.id)"
+          [ngStyle]="{
+            'background-image': 'url( ' + (movie | imageMovies) + ' )'
+          }"
+        >
+          <a (click)="openDialog(movie.id)">
+            <i class="material-icons header-icon"></i>
+          </a>
         </div>
-      </nav>
-    <mat-card class="container" >
-        
-            <div class="movie-card" *ngFor="let movie of obs | async">
-                <div class="movie-header manOfSteel">
-                    <div class="header-icon-container"
-                    (click)="openDialog(movie.id)"
-                    [ngStyle]="{
-                        'background-image': 'url( ' + (movie | imageMovies) + ' )'
-                      }">
-                        <a  (click)="openDialog(movie.id)">
-                            <i class="material-icons header-icon"></i>
-                        </a>
-                    </div>
-                    
-                </div>
-                <!--movie-header-->
-                <div class="movie-content">
-                    <div class="movie-content-header">
-                        <a (click)="openDialog(movie.id)">
-                            <h3 class="movie-title">{{movie.title}}</h3>
-                        </a>
-                        <div class="imax-logo"></div>
-                    </div>
-                    <div class="movie-info">
-                        <div class="info-section">
-                            <label>Date & Time</label>
-                            <span>{{movie.release_date | date:medium}}.</span>
-                        </div><!--date,time-->
-                        <div class="info-section">
-                            <label>Screen</label>
-                            <span>03</span>
-                        </div><!--screen-->
-                        <div class="info-section">
-                            <label>Row</label>
-                            <span>F</span>
-                        </div><!--row-->
-                        <div class="info-section">
-                            <label>Seat</label>
-                            <span>21,22</span>
-                        </div><!--seat-->
-                    </div>
-                </div><!--movie-content-->
-            </div><!--movie-card-->
-       
-    </mat-card>
-    
-  </div>
-  <mat-paginator [pageSizeOptions]="[4, 10, 25, 100]"></mat-paginator>
+      </div>
+      <!--movie-header-->
+      <div class="movie-content">
+        <div class="movie-content-header">
+          <a (click)="openDialog(movie.id)">
+            <h3 class="movie-title">{{ movie.title }}</h3>
+          </a>
+          <div class="imax-logo"></div>
+        </div>
+        <div class="movie-info">
+          <div class="info-section">
+            <label>Date & Time</label>
+            <span>{{ movie.release_date | date: medium }}.</span>
+          </div>
+          <!--date,time-->
+          <div class="info-section">
+            <label>Screen</label>
+            <span>03</span>
+          </div>
+          <!--screen-->
+          <div class="info-section">
+            <label>Row</label>
+            <span>F</span>
+          </div>
+          <!--row-->
+          <div class="info-section">
+            <label>Seat</label>
+            <span>21,22</span>
+          </div>
+          <!--seat-->
+        </div>
+      </div>
+      <!--movie-content-->
+    </div>
+    <!--movie-card-->
+  </mat-card>
+</div>
+<mat-paginator [pageSizeOptions]="[4, 10, 25, 100]"></mat-paginator>
